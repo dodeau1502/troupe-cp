@@ -198,9 +198,12 @@ body.has-bar{padding-bottom:calc(var(--tab-h) + env(safe-area-inset-bottom) + 12
 
 
 /* ambiance, album, accordéons */
-.top.cover{background-size:cover;background-position:center;padding-bottom:70px}
+.fleur.ph{background-size:cover;background-position:center;background-color:rgba(255,255,255,.18);box-shadow:0 0 0 2px rgba(255,255,255,.35)}
+.top .actions{display:flex;gap:8px;flex:none}
+.iconbtn.on{background:rgba(255,255,255,.34)}
+.patset{animation:unfold .22s ease-out;transform-origin:top}
+@keyframes unfold{from{opacity:0;transform:translateY(-8px) scaleY(.96)}}
 .top .devise{font-size:13px;font-style:italic;opacity:.95;margin-top:2px}
-.top.cover h1,.top.cover .sub,.top.cover .devise{text-shadow:0 1px 8px rgba(0,0,0,.5)}
 .sw{display:flex;flex-wrap:wrap;gap:10px}
 .sw button{width:38px;height:38px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 1.5px var(--line);cursor:pointer;padding:0}
 .sw button.on{box-shadow:0 0 0 3px var(--ink)}
@@ -299,6 +302,7 @@ const ico={
   tent:'<svg class="i" viewBox="0 0 24 24"><path d="M3 20 12 4l9 16Z"/><path d="M12 4v16"/><path d="m9 20 3-6 3 6"/></svg>',
   cal:'<svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
   pin:'<svg class="i" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+  gear:'<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>',
   refresh:'<svg class="i" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.3-4.3L4 8.5"/><path d="M4 4v4.5h4.5"/><path d="M4 13a8 8 0 0 0 14.3 4.3L20 15.5"/><path d="M20 20v-4.5h-4.5"/></svg>',
   chev:'<svg class="i chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>',
   back:'<svg class="i" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg>',
@@ -529,13 +533,13 @@ function chip(t,tone){return `<span class="chip ${tone||''}">${esc(t)}</span>`}
 function header(title,sub,back){
   const nm=patNom(), pr=S.profile||{};
   const cv=!back&&pr.cover&&S.photos[pr.cover], dv=!back&&pr.devise;
-  const bg=cv?` style="background-image:linear-gradient(160deg,color-mix(in srgb,var(--accd) 82%,transparent),color-mix(in srgb,var(--acc) 28%,transparent)),url('${cv}')"`:'';
-  return `<header class="top ${cv?'cover':''}"${bg}><div class="wrap">
+  const isPat=!back&&S.view==='pat';
+  return `<header class="top"><div class="wrap">
     ${back?`<button class="back" data-a="back">${ico.back}Retour</button>`:''}
     <div class="row">
-      <div class="fleur"><svg class="i" viewBox="0 0 24 24" style="width:26px;height:26px;stroke:#fff"><path d="M12 3c1.6 2.6 1.6 5.2 0 7.4-1.6-2.2-1.6-4.8 0-7.4Z"/><path d="M12 10.4V21"/><path d="M12 14c-2.4-.4-4.4-2-5-4.4 2.4.2 4.4 1.6 5 4.4Z"/><path d="M12 14c2.4-.4 4.4-2 5-4.4-2.4.2-4.4 1.6-5 4.4Z"/><path d="M8 21h8"/></svg></div>
+      <div class="fleur${cv?' ph':''}"${cv?` style="background-image:url('${cv}')"`:''}>${cv?'':`<svg class="i" viewBox="0 0 24 24" style="width:26px;height:26px;stroke:#fff"><path d="M12 3c1.6 2.6 1.6 5.2 0 7.4-1.6-2.2-1.6-4.8 0-7.4Z"/><path d="M12 10.4V21"/><path d="M12 14c-2.4-.4-4.4-2-5-4.4 2.4.2 4.4 1.6 5 4.4Z"/><path d="M12 14c2.4-.4 4.4-2 5-4.4-2.4.2-4.4 1.6-5 4.4Z"/><path d="M8 21h8"/></svg>`}</div>
       <div class="grow"><h1>${esc(title||('Patrouille '+nm))}</h1><div class="sub">${esc(sub||('Espace CP · '+(cpScout()?cpScout().prenom:'')))}</div>${dv?`<div class="devise">« ${esc(dv)} »</div>`:''}</div>
-      <button class="iconbtn" id="refresh" data-a="refresh" aria-label="Actualiser">${ico.refresh}</button>
+      <div class="actions">${isPat?`<button class="iconbtn ${S.patSet?'on':''}" data-a="patset" aria-label="Personnaliser la patrouille" aria-expanded="${!!S.patSet}">${ico.gear}</button>`:''}<button class="iconbtn" id="refresh" data-a="refresh" aria-label="Actualiser">${ico.refresh}</button></div>
     </div></div></header>`;
 }
 function tabbar(){
@@ -631,11 +635,11 @@ function posteKey(v){ if(!v) return ''; const n=norm(v); const p=POSTES.find(x=>
 function viewPat(){
   const sc=scouts(), pr=S.profile||{}, cur=(pr.color||DEF_COL[S.pat]||'').toLowerCase();
   const gal=(pr.gallery||[]).filter(id=>S.photos[id]);
-  let h=`<div class="card"><div class="subh" style="margin-bottom:10px">🎨 Notre patrouille</div>
+  let h=S.patSet?`<div class="card patset"><div class="subh" style="margin-bottom:10px">🎨 Notre patrouille</div>
     <div class="fld"><label>Devise ou cri de patrouille</label><div style="display:flex;gap:8px"><input id="devise" value="${esc(pr.devise||'')}" maxlength="120" placeholder="Ex : Toujours prêts !" autocomplete="off"><button class="btn s" data-a="devise" style="min-height:48px">OK</button></div></div>
     <div class="fld" style="margin-top:14px"><label>Couleur de la patrouille (flots, fanion)</label><div class="sw">${COULEURS.map(c=>`<button type="button" data-a="color" data-c="${c}" class="${c===cur?'on':''}" style="background:${c}" aria-label="Couleur ${c}"></button>`).join('')}<label class="btn s" style="width:auto;border-radius:99px;cursor:pointer">Autre…<input type="color" id="colorpick" value="${/^#[0-9a-f]{6}$/.test(cur)?cur:'#2956c8'}" style="position:absolute;opacity:0;width:0;height:0"></label></div></div>
-    <div style="margin-top:14px"><label class="btn s" style="cursor:pointer">📷 ${pr.cover?'Changer la photo de couverture':'Choisir une photo de couverture'}<input type="file" id="coverIn" accept="image/*" style="display:none"></label></div>
-  </div>`;
+    <div style="margin-top:14px"><label class="btn s" style="cursor:pointer">📷 ${pr.cover?'Changer la photo de la patrouille':'Choisir une photo de la patrouille'}<input type="file" id="coverIn" accept="image/*" style="display:none"></label></div>
+  </div>`:'';
   h+=`<div class="sec"><h2>Album de la patrouille<span class="tiny" style="text-transform:none;letter-spacing:0">${(pr.gallery||[]).length}/12</span></h2><div class="album">
     ${gal.map(id=>`<button class="ph" data-a="photo" data-id="${id}" style="background-image:url('${S.photos[id]}')" aria-label="Voir la photo"></button>`).join('')}
     ${(pr.gallery||[]).length<12?`<label class="add"><b>+</b>Ajouter<input type="file" id="photoIn" accept="image/*" multiple style="display:none"></label>`:''}
@@ -867,6 +871,7 @@ document.addEventListener('click',e=>{
   else if(a==='open'){S.actId=el.dataset.id;S.tab=el.dataset.tab||'fiche';S.view='sortie';openWork(curAct());autoOpen(curAct());history.pushState({v:'sortie'},'');render();window.scrollTo(0,0)}
   else if(a==='back'){history.back()}
   else if(a==='refresh'){load(true)}
+  else if(a==='patset'){S.patSet=!S.patSet;render()}
   else if(a==='filter'){S.filter=el.dataset.v;render()}
   else if(a==='tab'){S.tab=el.dataset.v;render();window.scrollTo(0,0)}
   else if(a==='hint'){LS.set('hint',true);render()}
