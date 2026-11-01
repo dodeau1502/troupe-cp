@@ -20,18 +20,14 @@
   --pine:#1b5e46; --pine2:#e3f0ea; --pine-ink:#ffffff;
   --amber:#d98a1f; --amber2:#fbf0dc;
   --ok:#1f8a55; --ok2:#e1f4ea; --warn:#b36b00; --warn2:#fdf0d5; --bad:#c0392b; --bad2:#fbe6e3; --info:#2b5fd9; --info2:#e5ecfd;
-  --acc:var(--pine); --acc2:var(--pine2);
+  --acc:var(--pine); --acc2:var(--pine2); --accd:#124634;
   --r:18px; --r2:12px; --sh:0 1px 2px rgba(30,40,35,.06),0 6px 20px rgba(30,40,35,.06);
   --tab-h:64px;
 }
-:root[data-pat="sacre"]{--acc:#b83a2e;--acc2:#fbe6e3}
-:root[data-pat="faucon"]{--acc:#2956c8;--acc2:#e5ecfd}
 @media (prefers-color-scheme:dark){
   :root{--bg:#121714;--card:#1b231f;--ink:#eaf0ec;--ink2:#a9b8b0;--ink3:#7d8c84;--line:#2a352f;--line2:#222c27;
     --pine2:#1f3a2f;--amber2:#3a2c12;--ok2:#17372a;--warn2:#3a2c12;--bad2:#3d1f1b;--info2:#1c2a4d;
     --sh:0 1px 2px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.25)}
-  :root[data-pat="sacre"]{--acc:#ee7b6e;--acc2:#3d1f1b}
-  :root[data-pat="faucon"]{--acc:#7ea0ff;--acc2:#1c2a4d}
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-text-size-adjust:100%}
@@ -42,10 +38,6 @@ h1,h2,h3,h4,p{margin:0}
 
 /* en-tête */
 .top{background:linear-gradient(160deg,var(--accd,var(--acc)) 0%,var(--acc) 100%);color:#fff;padding:calc(env(safe-area-inset-top) + 16px) 0 26px;position:relative}
-:root[data-pat="sacre"] .top{--accd:#8f2a20}
-:root[data-pat="faucon"] .top{--accd:#1b3f99}
-:root:not([data-pat]) .top{--accd:#124634}
-@media (prefers-color-scheme:dark){:root[data-pat="sacre"] .top{background:linear-gradient(160deg,#6d2019,#a53a2e)}:root[data-pat="faucon"] .top{background:linear-gradient(160deg,#142c70,#2750c0)}}
 .top .row{display:flex;align-items:center;gap:12px}
 .fleur{width:42px;height:42px;border-radius:13px;background:rgba(255,255,255,.18);display:grid;place-items:center;flex:none}
 .top h1{font-size:19px;font-weight:700;letter-spacing:-.01em;line-height:1.2}
@@ -189,11 +181,12 @@ svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.9;stro
 .tg.on{background:var(--bad2);border-color:var(--bad);color:var(--bad)}
 
 /* barre d'action */
-.bar-act{position:fixed;left:0;right:0;bottom:calc(var(--tab-h) + env(safe-area-inset-bottom));padding:10px 16px;background:linear-gradient(to top,var(--bg) 70%,transparent);z-index:20}
+.bar-act{position:fixed;left:0;right:0;bottom:calc(var(--tab-h) + env(safe-area-inset-bottom));padding:8px 16px 10px;background:var(--bg);border-top:1px solid var(--line);z-index:20}
 .bar-act .in{max-width:720px;margin:0 auto;display:flex;gap:10px}
 .bar-act .btn{flex:1.35;padding:0 12px;white-space:nowrap;font-size:15px}
 .bar-act .btn:first-child{flex:.8}
 .ind{font-size:12.5px;color:var(--ink3);text-align:center;margin-bottom:6px;min-height:16px}
+body.has-bar{padding-bottom:calc(var(--tab-h) + env(safe-area-inset-bottom) + 120px)}
 
 /* onglets bas */
 .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:color-mix(in srgb,var(--card) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
@@ -202,6 +195,39 @@ svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.9;stro
 .tabbar button svg{width:24px;height:24px}
 .tabbar button.on{color:var(--acc)}
 .tabbar .n{position:absolute;top:7px;left:calc(50% + 8px);min-width:18px;height:18px;border-radius:9px;background:var(--bad);color:#fff;font-size:11px;display:grid;place-items:center;padding:0 5px}
+
+
+/* ambiance, album, accordéons */
+.top.cover{background-size:cover;background-position:center;padding-bottom:70px}
+.top .devise{font-size:13px;font-style:italic;opacity:.95;margin-top:2px}
+.top.cover h1,.top.cover .sub,.top.cover .devise{text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.sw{display:flex;flex-wrap:wrap;gap:10px}
+.sw button{width:38px;height:38px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 1.5px var(--line);cursor:pointer;padding:0}
+.sw button.on{box-shadow:0 0 0 3px var(--ink)}
+.album{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.album .ph{aspect-ratio:1;border-radius:14px;background-color:var(--line2);background-size:cover;background-position:center;border:0;cursor:pointer;padding:0}
+.album .add{display:grid;place-items:center;align-content:center;gap:2px;border:2px dashed var(--line);color:var(--ink2);font-size:12.5px;font-weight:650;text-align:center;cursor:pointer;aspect-ratio:1;border-radius:14px;background:var(--card)}
+.album .add b{font-size:24px;line-height:1;color:var(--acc)}
+.asec{padding:0;overflow:hidden}
+.asec .ah{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;border:0;background:none;cursor:pointer;text-align:left}
+.asec .ai{width:40px;height:40px;border-radius:12px;background:var(--acc2);display:grid;place-items:center;font-size:20px;flex:none}
+.asec .at{flex:1;min-width:0}
+.asec .at b{display:block;font-size:16px;line-height:1.25}
+.asec .at>span{font-size:13px;color:var(--ink2);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.asec .st{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--line);color:#fff;font-size:14px;font-weight:800}
+.asec .st.ok{background:var(--ok)}
+.asec .ab{padding:6px 16px 18px;display:grid;gap:14px;border-top:1px solid var(--line2)}
+.asec .chev{transition:transform .2s}
+.asec.open .chev{transform:rotate(90deg)}
+.miss{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.miss .chip{border:0;cursor:pointer;font-family:inherit}
+.prow{display:grid;grid-template-columns:minmax(96px,128px) 1fr;gap:10px;align-items:center}
+.prow{margin-top:2px}
+.pdet{display:grid;gap:8px;margin:2px 0 8px}
+.pnm b{display:block;font-size:15px;line-height:1.2} .pnm span{font-size:11.5px;color:var(--ink3);line-height:1.2;display:block}
+.lb{display:grid;place-items:center;gap:12px}
+.lb img{max-width:100%;max-height:68vh;border-radius:14px}
+.subh{font-size:13px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.06em}
 
 /* divers */
 .toast{position:fixed;left:50%;bottom:calc(var(--tab-h) + env(safe-area-inset-bottom) + 86px);transform:translate(-50%,20px);background:#17201b;color:#fff;padding:12px 18px;border-radius:14px;font-size:14.5px;font-weight:600;opacity:0;transition:.25s;z-index:60;max-width:90vw;text-align:center;pointer-events:none;box-shadow:0 8px 28px rgba(0,0,0,.3)}
@@ -286,7 +312,7 @@ const ico={
 };
 
 /* ================== état ================== */
-const S={token:null,pat:'',snap:{},fiches:{},loaded:false,loading:false,err:'',view:'home',actId:null,tab:'fiche',filter:'avenir',work:null,baseRev:null,dirty:false,sync:null,busy:false,cache:false};
+const S={profile:{},photos:{},photosRev:-1,edits:[],sedit:{},openScouts:{},open:{},pdet:{},token:null,pat:'',snap:{},fiches:{},loaded:false,loading:false,err:'',view:'home',actId:null,tab:'fiche',filter:'avenir',work:null,baseRev:null,dirty:false,sync:null,busy:false,cache:false};
 let saveTimer=null;
 
 function initToken(){
@@ -300,10 +326,11 @@ async function rpc(fn,args){
   return r.json();
 }
 function applyData(res){
-  S.pat=res.pat; S.snap=res.snapshot||{}; S.fiches={};
+  S.pat=res.pat; S.snap=res.snapshot||{}; S.fiches={}; S.profile=res.profile||{}; S.edits=res.scout_edits||[];
   (res.fiches||[]).forEach(f=>{S.fiches[f.act_id]=f});
   S.sync=new Date(); S.loaded=true; S.err=''; S.cache=false;
   document.documentElement.dataset.pat=S.pat;
+  applyTheme();
   const nm=S.snap.pat&&S.snap.pat.nom?S.snap.pat.nom:S.pat;
   document.title='Espace CP · '+nm;
 }
@@ -322,13 +349,88 @@ async function load(silent){
     if(silent) toast('Pas de connexion — affichage de la dernière version');
   }
   S.loading=false; spin(false);
+  ensurePhotos();
   if(S.view==='sortie'&&!S.dirty&&S.actId) openWork(curAct());
   render();
 }
 function spin(on){const b=$('#refresh');if(b)b.classList.toggle('spin',on)}
 
+
+/* ================== thème de patrouille ================== */
+const DEF_COL={sacre:'#b83a2e',faucon:'#2956c8'};
+function hex2hsl(h){let r=parseInt(h.slice(1,3),16)/255,g=parseInt(h.slice(3,5),16)/255,b=parseInt(h.slice(5,7),16)/255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let H=0,Sx=0,L=(mx+mn)/2;if(mx!==mn){const d=mx-mn;Sx=L>.5?d/(2-mx-mn):d/(mx+mn);H=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4;H*=60}return[H,Sx*100,L*100]}
+const hsl=(h,s,l)=>'hsl('+Math.round(h)+' '+Math.round(s)+'% '+Math.round(l)+'%)';
+function applyTheme(){
+  const c0=(S.profile&&S.profile.color)||DEF_COL[S.pat]||'';
+  const st=document.documentElement.style;
+  if(!/^#[0-9a-f]{6}$/i.test(c0)){['--acc','--acc2','--accd'].forEach(k=>st.removeProperty(k));return}
+  const [h,s,l]=hex2hsl(c0), dark=window.matchMedia('(prefers-color-scheme: dark)').matches;
+  st.setProperty('--acc',dark?hsl(h,s,Math.max(l,64)):hsl(h,s,Math.min(l,44)));
+  st.setProperty('--accd',dark?hsl(h,s,Math.max(l-34,20)):hsl(h,s,Math.max(Math.min(l,44)-18,14)));
+  st.setProperty('--acc2',dark?hsl(h,Math.min(s,45),17):hsl(h,Math.min(s,70),93));
+  const m=document.querySelector('meta[name=theme-color]'); if(m) m.content=dark?hsl(h,s,Math.max(l-34,20)):hsl(h,s,Math.max(Math.min(l,44)-18,14));
+}
+async function ensurePhotos(){
+  const pr=S.profile||{}; if(!S.token||pr.rev==null||S.photosRev===pr.rev) return;
+  const need=[pr.cover,...(pr.gallery||[])].filter(Boolean);
+  if(!need.length){S.photosRev=pr.rev;return}
+  if(need.every(id=>S.photos[id])){S.photosRev=pr.rev;return}
+  try{const r=await rpc('troupe_cp_photos',{p_token:S.token}); if(r.ok){S.photos={};r.photos.forEach(x=>{S.photos[x.id]=x.data});S.photosRev=pr.rev;render()}}catch(e){}
+}
+function compress(file,max,q){
+  return new Promise((res,rej)=>{
+    const fr=new FileReader(); fr.onerror=()=>rej(new Error('lecture'));
+    fr.onload=()=>{const im=new Image(); im.onerror=()=>rej(new Error('image'));
+      im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',q))};
+      im.src=fr.result};
+    fr.readAsDataURL(file);
+  });
+}
+async function addPhotos(files,kind){
+  files=[...files]; if(!files.length) return;
+  let ok=0;
+  for(const f of files){
+    try{
+      toast('Envoi de la photo '+(ok+1)+'/'+files.length+'…');
+      let d=await compress(f,kind==='cover'?1100:900,kind==='cover'?.74:.7);
+      if(d.length>420000) d=await compress(f,kind==='cover'?800:700,.6);
+      const r=await rpc('troupe_cp_photo_add',{p_token:S.token,p_kind:kind,p_data:d});
+      if(r.ok){
+        const old=new Set(Object.keys(S.photos)); S.profile=r.profile;
+        const id=kind==='cover'?r.profile.cover:(r.profile.gallery||[]).find(x=>!old.has(x));
+        if(id) S.photos[id]=d; ok++;
+      } else if(r.error==='gallery_full'){toast('Album plein (12 photos max)');break}
+      else {toast('Photo refusée'); }
+    }catch(e){toast('Pas de connexion — réessaie');break}
+  }
+  S.photosRev=(S.profile||{}).rev;
+  if(ok) toast(ok>1?ok+' photos ajoutées ✓':'Photo ajoutée ✓');
+  render();
+}
+async function saveProfile(color,devise){
+  try{const r=await rpc('troupe_cp_profile_save',{p_token:S.token,p_color:color,p_devise:devise});
+    if(r.ok){S.profile=r.profile;applyTheme();toast('Enregistré ✓');render()} else toast('Erreur : '+(r.error||'inconnue'))}
+  catch(e){toast('Pas de connexion')}
+}
+async function scoutSave(id){
+  const E=S.sedit[id]; if(!E) return; const patch={};
+  ['niveau','pa','badges_cp'].forEach(k=>{if(E[k]!=null)patch[k]=E[k]});
+  try{const r=await rpc('troupe_cp_scout_save',{p_token:S.token,p_scout_id:id,p_patch:patch});
+    if(r.ok){S.edits=S.edits.filter(x=>x.scout_id!==id);S.edits.push({scout_id:id,patch:r.patch,rev:r.rev});delete S.sedit[id];toast('Enregistré — le chef est prévenu ✓');cacheNow();render()}
+    else if(r.error==='invalid_token'){S.err='invalid';LS.del('tk');render()}
+    else toast('Erreur : '+(r.error||'inconnue'))}
+  catch(e){toast('Pas de connexion — réessaie plus tard')}
+}
+function cacheNow(){LS.set('cache',{res:{pat:S.pat,snapshot:S.snap,fiches:Object.values(S.fiches),profile:S.profile,scout_edits:S.edits},at:Date.now()})}
+
 /* ================== données dérivées ================== */
-const scouts=()=>S.snap.scouts||[];
+const scouts=()=>(S.snap.scouts||[]).map(s=>{
+  const e=(S.edits||[]).find(x=>x.scout_id===s.id);
+  if(!e||e.rev<=(s.cp_rev||0)) return s;
+  const p=e.patch||{}, o={...s};
+  if('niveau' in p) o.niveau=p.niveau; if('pa' in p) o.pa26=p.pa; if('badges_cp' in p) o.badges_cp=p.badges_cp;
+  return o;
+});
 const acts=()=>(S.snap.activites||[]).slice().sort((a,b)=>(a.debut||'').localeCompare(b.debut||''));
 const sorties=()=>acts().filter(a=>a.fiche);
 const curAct=()=>acts().find(a=>a.id===S.actId);
@@ -362,14 +464,14 @@ function nextClass(s){const c=(s.classes||[]).find(x=>x.done<x.total);return c||
 function autoPoste(pk){
   const sc=scouts();
   const has=(x,f)=>{const p=x[f];return !!p&&(norm(p).startsWith(norm(pk))||POSTE_ALIAS[norm(p)]===pk)};
-  let s=sc.find(x=>has(x,'pa26'))||sc.find(x=>has(x,'pa25'));
+  let s=sc.find(x=>has(x,'pa26'))||sc.find(x=>!x.pa26&&has(x,'pa25'));
   if(!s&&pk==='CP') s=sc.find(x=>/^CP/i.test(x.role||''));
   if(!s&&pk==='Pionnier') s=sc.find(x=>/second/i.test(x.role||''));
   return s?s.prenom:'';
 }
 function defaultFiche(a){
   const postes={}; POSTES.forEach(p=>{postes[p.k]={scout:autoPoste(p.k),mission:'',materiel:''}});
-  const we=a.fin&&a.fin!==a.debut||/we|week-end/i.test(a.titre||'');
+  const we=isWE(a);
   return {
     patrouille:S.pat, type:we?'WE':'Sortie', lieu:a.lieu||'', proprietaire:'', tel_proprietaire:'', service:'',
     messe_heure:'', messe_paroisse:'', messe_cure:'', pretre_contacte:false, messe_charge:'1ère lecture + service autel',
@@ -380,12 +482,14 @@ function defaultFiche(a){
     debrief:{fait:false,date:'',ambiance:0,service_rendu:'',absents:'',messe_deroulement:'',objectifs_atteints:'',progression_scouts:'',badges_envisages:[],ameliorations:'',bilan_cdp:''}
   };
 }
+const isWE=a=>!!(a.weekend||(a.fin&&a.fin!==a.debut)||/week-?end/i.test(a.titre||''));
 const dkey=id=>'wk:'+S.pat+':'+id;
 function openWork(a){
   if(!a) return;
   const f=S.fiches[a.id];
   let w=merge(defaultFiche(a),f?f.fiche:null);
   w.statut=f?f.statut:'En préparation';
+  w.type=isWE(a)?'WE':'Sortie';
   w.debrief=merge(defaultFiche(a).debrief,w.debrief||{});
   if(!Array.isArray(w.debrief.badges_envisages)) w.debrief.badges_envisages=[];
   const dk=LS.get(dkey(a.id),null);
@@ -406,15 +510,16 @@ function markDirty(){
 
 /* ================== complétude ================== */
 function completeness(w){
+  const we=w.type==='WE';
   const asg=Object.values(w.postes||{}).filter(p=>p.scout).length;
   const items=[
-    ['Lieu renseigné',!!(w.lieu||'').trim()],
-    ['Propriétaire et téléphone',!!(w.proprietaire||'').trim()&&!!(w.tel_proprietaire||'').trim()],
-    ['Programme horaire (4 lignes min.)',(w.horaire_j1||[]).filter(r=>r.h&&r.act).length>=4],
-    ['Postes d’action attribués (6 min.)',asg>=6],
-    ['Messe : heure et paroisse',!!(w.messe_heure||'').trim()&&!!(w.messe_paroisse||'').trim()]
+    {k:'lieu',l:'Lieu renseigné',ok:!!(w.lieu||'').trim()},
+    {k:'lieu',l:'Propriétaire et téléphone',ok:!!(w.proprietaire||'').trim()&&!!(w.tel_proprietaire||'').trim()},
+    {k:'prog',l:'Programme horaire (4 lignes min.)',ok:(w.horaire_j1||[]).filter(r=>r.h&&r.act).length>=4},
+    {k:'postes',l:'Postes d’action attribués (6 min.)',ok:asg>=6}
   ];
-  return {items,pct:Math.round(items.filter(i=>i[1]).length/items.length*100)};
+  if(we) items.push({k:'messe',l:'Messe : heure et paroisse',ok:!!(w.messe_heure||'').trim()&&!!(w.messe_paroisse||'').trim()});
+  return {items,pct:Math.round(items.filter(i=>i.ok).length/items.length*100)};
 }
 
 /* ================== rendu ================== */
@@ -422,12 +527,14 @@ function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('on');
 function ringSvg(pct,size,stroke,col){const r=(size-stroke)/2,c=2*Math.PI*r;return `<svg viewBox="0 0 ${size} ${size}"><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--line)" stroke-width="${stroke}"/><circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="${col}" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct/100)}"/></svg>`}
 function chip(t,tone){return `<span class="chip ${tone||''}">${esc(t)}</span>`}
 function header(title,sub,back){
-  const nm=patNom();
-  return `<header class="top"><div class="wrap">
+  const nm=patNom(), pr=S.profile||{};
+  const cv=!back&&pr.cover&&S.photos[pr.cover], dv=!back&&pr.devise;
+  const bg=cv?` style="background-image:linear-gradient(160deg,color-mix(in srgb,var(--accd) 82%,transparent),color-mix(in srgb,var(--acc) 28%,transparent)),url('${cv}')"`:'';
+  return `<header class="top ${cv?'cover':''}"${bg}><div class="wrap">
     ${back?`<button class="back" data-a="back">${ico.back}Retour</button>`:''}
     <div class="row">
       <div class="fleur"><svg class="i" viewBox="0 0 24 24" style="width:26px;height:26px;stroke:#fff"><path d="M12 3c1.6 2.6 1.6 5.2 0 7.4-1.6-2.2-1.6-4.8 0-7.4Z"/><path d="M12 10.4V21"/><path d="M12 14c-2.4-.4-4.4-2-5-4.4 2.4.2 4.4 1.6 5 4.4Z"/><path d="M12 14c2.4-.4 4.4-2 5-4.4-2.4.2-4.4 1.6-5 4.4Z"/><path d="M8 21h8"/></svg></div>
-      <div class="grow"><h1>${esc(title||('Patrouille '+nm))}</h1><div class="sub">${esc(sub||('Espace CP · '+(cpScout()?cpScout().prenom:'')))}</div></div>
+      <div class="grow"><h1>${esc(title||('Patrouille '+nm))}</h1><div class="sub">${esc(sub||('Espace CP · '+(cpScout()?cpScout().prenom:'')))}</div>${dv?`<div class="devise">« ${esc(dv)} »</div>`:''}</div>
       <button class="iconbtn" id="refresh" data-a="refresh" aria-label="Actualiser">${ico.refresh}</button>
     </div></div></header>`;
 }
@@ -449,6 +556,7 @@ function render(){
   else if(S.view==='sorties') body=header('Mes sorties','Patrouille '+patNom())+`<div class="wrap pull view">${viewSorties()}</div>`;
   else if(S.view==='sortie'){const a=curAct(); if(!a){S.view='sorties';return render()} body=header(a.titre,dates(a),true)+`<div class="wrap pull view">${viewSortie(a)}</div>${actionBar(a)}`}
   app.innerHTML=body+tabbar()+(S.cache?'':'');
+  document.body.classList.toggle('has-bar',!!$('.bar-act'));
   window.scrollTo(0,sc);
 }
 
@@ -492,7 +600,7 @@ function viewHome(){
     ${obj.patrouille?`<h4 class="small b" style="margin-bottom:4px">Pour la patrouille</h4><p style="white-space:pre-line">${esc(obj.patrouille)}</p>`:''}
     ${obj.troupe?`<h4 class="small b" style="margin:12px 0 4px">Thème de la troupe</h4><p class="mute small" style="white-space:pre-line">${esc(obj.troupe)}</p>`:''}</div></div>`}
 
-  const ev=acts().filter(a=>!a.fiche&&!isPast(a)&&a.statut!=='Annulé').slice(0,5);
+  const ev=acts().filter(a=>!a.fiche&&!isPast(a)&&a.statut!=='Annulé').slice(0,6);
   if(ev.length){h+=`<div class="sec"><h2>Dates à retenir</h2><div class="card" style="padding:6px 16px">`;
     ev.forEach(a=>{h+=`<div class="poste"><span><b>${esc(a.titre)}</b><br><span class="tiny">${esc(a.type||'')}</span></span><span>${esc(dates(a))}</span></div>`});h+='</div></div>'}
   h+=installHint();
@@ -517,41 +625,51 @@ function installHint(){
 }
 
 /* ---------- patrouille ---------- */
+const NIVEAUX=['Nouveau','Aspirant','Promesse','2nde classe','1ère classe'];
+const COULEURS=['#b83a2e','#c8561b','#d98a1f','#6a8f1f','#1f7a4d','#0f7f8c','#2956c8','#1b3f99','#6a3fb0','#a23b72','#4a4f55','#1d2a24'];
+function posteKey(v){ if(!v) return ''; const n=norm(v); const p=POSTES.find(x=>n.startsWith(norm(x.k))); return p?p.k:(POSTE_ALIAS[n]||''); }
 function viewPat(){
-  const sc=scouts();
-  if(!sc.length) return `<div class="card empty"><div class="em">👥</div><b>Pas encore de données</b><p class="small">Le chef doit publier la patrouille depuis son application.</p></div>`;
-  const niv={}; sc.forEach(s=>{niv[s.niveau||'—']=(niv[s.niveau||'—']||0)+1});
-  const nb=sc.reduce((n,s)=>n+(s.badges||[]).length,0);
-  let h=`<div class="grid2"><div class="kpi"><b>${sc.length}</b><span>gars dans la patrouille</span></div><div class="kpi"><b>${nb}</b><span>badges obtenus</span></div></div>
-    <div class="chips" style="margin:12px 2px 0">${Object.entries(niv).map(([k,v])=>`<span class="chip" style="background:${NIV_COL[k]||'#8a978f'}22;color:${NIV_COL[k]||'var(--ink2)'}">${v} · ${esc(k)}</span>`).join('')}</div>`;
+  const sc=scouts(), pr=S.profile||{}, cur=(pr.color||DEF_COL[S.pat]||'').toLowerCase();
+  const gal=(pr.gallery||[]).filter(id=>S.photos[id]);
+  let h=`<div class="card"><div class="subh" style="margin-bottom:10px">🎨 Notre patrouille</div>
+    <div class="fld"><label>Devise ou cri de patrouille</label><div style="display:flex;gap:8px"><input id="devise" value="${esc(pr.devise||'')}" maxlength="120" placeholder="Ex : Toujours prêts !" autocomplete="off"><button class="btn s" data-a="devise" style="min-height:48px">OK</button></div></div>
+    <div class="fld" style="margin-top:14px"><label>Couleur de la patrouille (flots, fanion)</label><div class="sw">${COULEURS.map(c=>`<button type="button" data-a="color" data-c="${c}" class="${c===cur?'on':''}" style="background:${c}" aria-label="Couleur ${c}"></button>`).join('')}<label class="btn s" style="width:auto;border-radius:99px;cursor:pointer">Autre…<input type="color" id="colorpick" value="${/^#[0-9a-f]{6}$/.test(cur)?cur:'#2956c8'}" style="position:absolute;opacity:0;width:0;height:0"></label></div></div>
+    <div style="margin-top:14px"><label class="btn s" style="cursor:pointer">📷 ${pr.cover?'Changer la photo de couverture':'Choisir une photo de couverture'}<input type="file" id="coverIn" accept="image/*" style="display:none"></label></div>
+  </div>`;
+  h+=`<div class="sec"><h2>Album de la patrouille<span class="tiny" style="text-transform:none;letter-spacing:0">${(pr.gallery||[]).length}/12</span></h2><div class="album">
+    ${gal.map(id=>`<button class="ph" data-a="photo" data-id="${id}" style="background-image:url('${S.photos[id]}')" aria-label="Voir la photo"></button>`).join('')}
+    ${(pr.gallery||[]).length<12?`<label class="add"><b>+</b>Ajouter<input type="file" id="photoIn" accept="image/*" multiple style="display:none"></label>`:''}
+  </div></div>`;
+  if(!sc.length) return h+`<div class="sec"><div class="card empty"><div class="em">👥</div><b>Pas encore de données</b><p class="small">Le chef doit publier la patrouille depuis son application.</p></div></div>`;
   h+=`<div class="sec"><h2>Les gars</h2>`;
   sc.forEach((s,i)=>{h+=scoutCard(s,i)});
-  h+='</div>';
-  h+=`<div class="sec"><h2>Postes d’action</h2><div class="card" style="padding:6px 16px">`;
-  POSTES.forEach(p=>{const m=(x,f)=>x[f]&&(norm(x[f]).startsWith(norm(p.k))||POSTE_ALIAS[norm(x[f])]===p.k);
-    let who=sc.filter(s=>m(s,'pa26')).map(s=>s.prenom); if(!who.length) who=sc.filter(s=>m(s,'pa25')).map(s=>s.prenom);
-    const w2=who.length?who:(p.k==='CP'?sc.filter(s=>/^CP/i.test(s.role||'')).map(s=>s.prenom):[]);
-    h+=`<div class="poste"><span><b>${esc(p.k)}</b><br><span class="tiny">${esc(p.d)}</span></span><span>${w2.length?esc(w2.join(', ')):'<span class="chip warn">à attribuer</span>'}</span></div>`});
-  h+='</div></div>';
-  return h;
+  return h+'</div>';
 }
 function scoutCard(s,i){
-  const nc=nextClass(s), pct=(s.classes||[]).length?(nc?Math.round(nc.done/nc.total*100):100):0, col=AV_COL[i%AV_COL.length];
-  const age=ageOf(s), an=annivOf(s), pa=s.pa26||s.pa25;
-  const poste=s.pa26||'';
-  return `<details class="card scout"><summary>
-    <span class="av" style="background:${col}">${esc((s.prenom||'?').slice(0,1).toUpperCase())}<span class="ring">${ringSvg(pct,60,4,'var(--ok)')}</span></span>
+  const col=AV_COL[i%AV_COL.length], age=ageOf(s), an=annivOf(s), E=S.sedit[s.id]||{};
+  const niv=E.niveau!=null?E.niveau:(s.niveau||'');
+  const pa=E.pa!=null?E.pa:(posteKey(s.pa26)||s.pa26||'');
+  const bc=E.badges_cp!=null?E.badges_cp:(s.badges_cp||'');
+  const nivOpts=[...NIVEAUX]; if(niv&&!nivOpts.includes(niv)) nivOpts.unshift(niv);
+  const paOpts=['',...POSTES.map(p=>p.k)]; if(pa&&!paOpts.includes(pa)) paOpts.push(pa);
+  const official=s.badges||[], dirty=Object.keys(E).length>0;
+  const pChip=posteKey(pa)||pa;
+  return `<details class="card scout" data-sid="${esc(s.id)}" ${S.openScouts[s.id]?'open':''}><summary>
+    <span class="av" style="background:${col}">${esc((s.prenom||'?').slice(0,1).toUpperCase())}</span>
     <span style="flex:1;min-width:0"><span class="nm">${esc(s.prenom)}</span>
-      <span class="tags">${s.role?chip(s.role,'acc'):''}${s.niveau?`<span class="chip" style="background:${NIV_COL[s.niveau]||'#8a978f'}22;color:${NIV_COL[s.niveau]||'var(--ink2)'}">${esc(s.niveau)}</span>`:''}${age?chip(age):''}${poste?chip(poste):''}</span></span>${ico.chev}</summary>
+      <span class="tags">${s.role?chip(s.role,'acc'):''}${niv?chip(niv):''}${pChip?chip('PA · '+pChip):''}${age?chip(age):''}</span></span>${ico.chev}</summary>
     <div class="body">
-      ${an?`<div class="small mute">🎂 Anniversaire : <b>${esc(an)}</b>${age?' · '+esc(age):''}</div>`:`<div class="small mute">🎂 Date de naissance non renseignée</div>`}
-      ${pa&&pa!==poste?`<div class="small mute">Poste d’action précédent : ${esc(s.pa25)}</div>`:''}
-      ${(s.classes||[]).map(c=>`<div><h4>${esc(c.label)} · ${c.done}/${c.total}</h4><div class="bar ${c.done===c.total?'ok':''}"><i style="width:${Math.round(c.done/c.total*100)}%"></i></div>
-        ${c.done<c.total?`<ul class="todo-list" style="margin-top:10px">${c.items.map(it=>`<li class="${it.done?'d':''}">${esc(it.t)}</li>`).join('')}</ul>`:''}</div>`).join('')}
-      <div><h4>Badges et brevets (${(s.badges||[]).length})</h4>${(s.badges||[]).length?`<div class="chips">${s.badges.map(b=>`<span class="badge"><i style="background:${PISTES[b.piste]||'#8a978f'}"></i>${esc(b.nom)}</span>`).join('')}</div>`:'<p class="small mute">Aucun badge pour le moment.</p>'}</div>
-      ${(s.etapes||[]).length?`<div><h4>Étapes personnelles</h4><ul class="todo-list">${s.etapes.map(e=>`<li class="${e.done?'d':''}">${esc(e.t)}</li>`).join('')}</ul></div>`:''}
-      ${s.defi||s.raid?`<div class="chips">${s.defi?chip('Défi Cime : '+s.defi,'info'):''}${s.raid?chip('Raid : '+s.raid,'info'):''}</div>`:''}
-      ${s.presence!=null?`<div><h4>Présence aux activités</h4><div class="bar"><i style="width:${s.presence}%"></i></div><p class="tiny" style="margin-top:4px">${s.presence} %</p></div>`:''}
+      <div class="two">
+        <div class="fld"><label>Classe</label><select data-sf="${esc(s.id)}:niveau">${nivOpts.map(o=>`<option ${o===niv?'selected':''}>${esc(o)}</option>`).join('')}</select></div>
+        <div class="fld"><label>Poste d’action</label><select data-sf="${esc(s.id)}:pa">${paOpts.map(o=>`<option value="${esc(o)}" ${o===pa?'selected':''}>${o?esc(o):'— Aucun —'}</option>`).join('')}</select></div>
+      </div>
+      ${!pa&&s.pa25?`<div class="tiny" style="margin-top:-6px">Poste l’an dernier : ${esc(s.pa25)}</div>`:''}
+      <div class="fld"><label>Badges qu’il possède</label>
+        ${official.length?`<div class="chips" style="margin-bottom:8px">${official.map(b=>`<span class="badge"><i style="background:${PISTES[b.piste]||'#8a978f'}"></i>${esc(b.nom)}</span>`).join('')}</div>`:''}
+        <textarea data-sf="${esc(s.id)}:badges_cp" rows="2" placeholder="Ex : Topographie, Secourisme, Cuisine…">${esc(bc)}</textarea>
+        <div class="hint">${official.length?'Les badges ci-dessus sont déjà reconnus par le chef. ':''}Ajoute les autres ici, séparés par des virgules.</div></div>
+      <button class="btn p full" id="sv-${esc(s.id)}" data-a="scoutsave" data-id="${esc(s.id)}" ${dirty?'':'disabled'}>Enregistrer pour ${esc(s.prenom)}</button>
+      <div class="tiny">${an?'🎂 '+esc(an)+(age?' · '+esc(age):''):'🎂 Date de naissance non renseignée'}${s.presence!=null?' · Présence '+s.presence+' %':''}</div>
     </div></details>`;
 }
 
@@ -582,24 +700,6 @@ function viewSorties(){
 }
 
 /* ---------- détail d'une sortie ---------- */
-function viewSortie(a){
-  const w=S.work, s=stage(a), f=S.fiches[a.id];
-  const dis=ficheEditable(a)?'':'disabled';
-  const cm=w.validation&&w.validation.commentaires;
-  let h=`<div class="card" style="padding:16px 16px 14px">${stepper(s)}</div><div style="height:12px"></div>`;
-  if(s.i===0&&stOf(a)==='À corriger'&&cm) h+=`<div class="banner bad">${ico.alert}<div><b>À corriger avant renvoi</b><p>${esc(cm)}</p></div></div><div style="height:12px"></div>`;
-  if(s.i===1) h+=`<div class="banner info">${ico.lock}<div><b>Envoyée au chef</b><p>La fiche est verrouillée pendant la relecture. Tu seras prévenu ici dès qu’elle est validée ou à corriger.</p></div></div><div style="height:12px"></div>`;
-  if(s.i>=2&&s.i<=4&&stOf(a)!=='En attente de validation'&&S.tab==='fiche') h+=`<div class="banner ok">${ico.check}<div><b>Fiche validée par le chef</b>${cm?`<p>${esc(cm)}</p>`:''}${w.validation&&w.validation.consignes_securite?`<p style="margin-top:6px">🛟 ${esc(w.validation.consignes_securite)}</p>`:''}</div></div><div style="height:12px"></div>`;
-  const tabs=[['fiche','Fiche',ico.edit],['prog','Programme',ico.cal],['postes','Postes',ico.users],['debrief','Débrief',ico.clip]];
-  h+=`<div class="tabs">${tabs.map(t=>`<button data-a="tab" data-v="${t[0]}" class="${S.tab===t[0]?'on':''} ${t[0]==='debrief'&&!debriefEditable(a)?'lock':''}">${t[2]}${t[1]}</button>`).join('')}</div>`;
-  h+=`<div class="card form" id="formcard">`;
-  if(S.tab==='fiche') h+=tabFiche(a,dis);
-  else if(S.tab==='prog') h+=tabProg(a,dis);
-  else if(S.tab==='postes') h+=tabPostes(a,dis);
-  else h+=tabDebrief(a);
-  h+='</div>';
-  return h;
-}
 function fld(path,label,o={}){
   const v=getP(S.work,path); const val=v==null?'':v; const d=o.dis||'';
   let inp;
@@ -609,52 +709,96 @@ function fld(path,label,o={}){
   return `<div class="fld"><label>${label}</label>${inp}${o.hint?`<div class="hint">${o.hint}</div>`:''}</div>`;
 }
 function chk(path,label,dis){const v=getP(S.work,path);return `<label class="chk"><input type="checkbox" data-f="${path}" ${v?'checked':''} ${dis}> ${label}</label>`}
-function tabFiche(a,dis){
-  const c=completeness(S.work), col=c.pct===100?'var(--ok)':'var(--acc)';
-  let h=`<div class="prog"><div class="ringbox">${ringSvg(c.pct,56,6,col)}<b>${c.pct}%</b></div><div><div class="h3">Ta fiche est complète à ${c.pct} %</div><div class="small mute">Les cases ci-dessous aident le chef à valider vite.</div></div></div>
-    <div style="display:grid;gap:4px">${c.items.map(i=>`<div class="check ${i[1]?'ok':''}">${i[1]?ico.check:'<svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>'}${esc(i[0])}</div>`).join('')}</div><hr style="border:0;border-top:1px solid var(--line2);width:100%;margin:0">`;
-  h+=fld('type','Type de sortie',{t:'sel',o:[['Sortie','Sortie (une journée)'],['WE','Week-end (2 jours)']],dis});
-  h+=fld('lieu','Lieu de la sortie',{dis,ph:'Ex : Forêt de Sénart, parking du Rond-Point'});
-  h+=`<div class="two">${fld('proprietaire','Propriétaire / contact sur place',{dis,ph:'Nom'})}${fld('tel_proprietaire','Téléphone',{t:'tel',dis,ph:'06 …'})}</div>`;
-  h+=fld('service','Service rendu au propriétaire',{dis,ph:'Ex : rentrer le bois, débroussailler'});
-  h+=`<div class="h3" style="margin-top:6px">⛪ Messe</div><div class="two">${fld('messe_heure','Heure',{dis,ph:'10h00'})}${fld('messe_paroisse','Paroisse',{dis})}</div>`;
-  h+=`<div class="two">${fld('messe_cure','Curé / contact',{dis})}${fld('messe_charge','Charge de la patrouille',{dis})}</div>${chk('pretre_contacte','Le prêtre a été contacté',dis)}`;
-  h+=`<div class="h3" style="margin-top:6px">🎯 Objectifs</div>`+fld('objectifs','Objectifs de la sortie',{t:'area',dis,hint:'Pré-rempli avec la technique du cycle. Tu peux le préciser.'});
-  h+=fld('veillee_theme','Thème de veillée',{dis,ph:'Facultatif'});
-  return h;
+const short=(t,n)=>{t=String(t||'').replace(/\s+/g,' ').trim();return t.length>n?t.slice(0,n-1)+'…':t};
+function secDefs(a,w){
+  const c=completeness(w), we=w.type==='WE';
+  const okK=k=>c.items.filter(i=>i.k===k).every(i=>i.ok);
+  const asg=Object.values(w.postes||{}).filter(p=>p.scout).length;
+  const rows=(w.horaire_j1||[]).filter(r=>r.h&&r.act).length+(we?(w.horaire_j2||[]).filter(r=>r.h&&r.act).length:0);
+  const ms=[w.messe_heure,w.messe_paroisse].filter(Boolean).join(' · ');
+  return [
+    {k:'lieu',ic:'📍',t:'Lieu et contact',ok:okK('lieu'),sum:w.lieu?short(w.lieu,44):'À compléter'},
+    {k:'messe',ic:'⛪',t:'Messe',ok:we?okK('messe'):true,opt:!we,sum:ms?short(ms,44):(we?'À compléter':'Si une messe est prévue')},
+    {k:'obj',ic:'🎯',t:we?'Objectifs et veillée':'Objectifs',ok:!!(w.objectifs||'').trim(),sum:short(w.objectifs,46)||'À compléter'},
+    {k:'prog',ic:'🕒',t:'Programme',ok:okK('prog'),sum:rows?rows+' ligne'+(rows>1?'s':'')+' · '+(we?'2 jours':'1 jour'):'À compléter'},
+    {k:'postes',ic:'👥',t:'Postes d’action',ok:okK('postes'),sum:asg+' / '+POSTES.length+' attribués'}
+  ];
 }
-function tabProg(a,dis){
+const secHead=(d,open)=>`<button class="ah" data-a="sec" data-k="${d.k}" aria-expanded="${open?'true':'false'}"><span class="ai">${d.ic}</span><span class="at"><b>${d.t}${d.opt?' <span class="tiny">(facultatif)</span>':''}</b><span>${esc(d.sum)}</span></span><span class="st ${d.ok?'ok':''}">${d.ok?'✓':''}</span>${ico.chev}</button>`;
+function progBox(c,defs){
+  const col=c.pct===100?'var(--ok)':'var(--acc)', miss=defs.filter(d=>!d.ok&&!d.opt);
+  return `<div class="prog"><div class="ringbox">${ringSvg(c.pct,56,6,col)}<b>${c.pct}%</b></div><div style="flex:1;min-width:0"><div class="h3">${c.pct===100?'Fiche complète, prête à envoyer':'Fiche complète à '+c.pct+' %'}</div>
+    ${miss.length?`<div class="small mute">Il reste :</div><div class="miss">${miss.map(d=>`<button class="chip warn" data-a="sec" data-k="${d.k}" data-force="1">${d.ic} ${d.t}</button>`).join('')}</div>`:`<div class="small mute">Tu peux l’envoyer au chef.</div>`}</div></div>`;
+}
+function secBody(k,a,dis){
   const w=S.work, we=w.type==='WE';
-  const poSel=[['','—'],...POSTES.map(p=>[p.k,p.k])];
-  const rows=(key)=>(w[key]||[]).map((r,i)=>`<div class="rowh"><div class="fld"><input data-f="${key}.${i}.h" value="${esc(r.h)}" ${dis} placeholder="14h00" aria-label="Heure"></div><div class="fld"><input data-f="${key}.${i}.act" value="${esc(r.act)}" ${dis} placeholder="Activité" aria-label="Activité"></div>${dis?'<span></span>':`<button class="x" data-a="delrow" data-l="${key}" data-i="${i}" aria-label="Supprimer">✕</button>`}<div class="fld pa"><select data-f="${key}.${i}.pa" ${dis} aria-label="Responsable">${poSel.map(o=>`<option value="${esc(o[0])}" ${o[0]===(r.pa||'')?'selected':''}>${o[0]?'Resp. : '+esc(o[1]):'Responsable…'}</option>`).join('')}</select></div></div>`).join('');
-  let h=`<div class="h3">${we?'Jour 1':'Programme de la sortie'}</div><div>${rows('horaire_j1')}</div>${dis?'':`<button class="btn s" data-a="addrow" data-l="horaire_j1">+ Ajouter une ligne</button>`}`;
-  if(we) h+=`<div class="h3" style="margin-top:10px">Jour 2</div><div>${rows('horaire_j2')}</div>${dis?'':`<button class="btn s" data-a="addrow" data-l="horaire_j2">+ Ajouter une ligne</button>`}`;
-  else h+=`<p class="tiny">Besoin d’un programme sur 2 jours ? Passe le type en « Week-end » dans l’onglet Fiche.</p>`;
+  if(k==='lieu') return fld('lieu','Lieu de la sortie',{dis,ph:'Ex : Forêt de Sénart, parking du Rond-Point'})+
+    `<div class="two">${fld('proprietaire','Contact sur place',{dis,ph:'Nom du propriétaire'})}${fld('tel_proprietaire','Téléphone',{t:'tel',dis,ph:'06 …'})}</div>`+
+    fld('service','Service rendu au propriétaire',{dis,ph:'Ex : rentrer le bois, débroussailler'});
+  if(k==='messe') return `<div class="two">${fld('messe_heure','Heure',{dis,ph:'10h00'})}${fld('messe_paroisse','Paroisse',{dis,ph:'Nom de la paroisse'})}</div>`+
+    fld('messe_cure','Curé ou contact (facultatif)',{dis})+chk('pretre_contacte','Le prêtre a été prévenu',dis);
+  if(k==='obj') return fld('objectifs','Objectifs de la sortie',{t:'area',dis,hint:'Pré-rempli avec la technique du cycle : précise-le si besoin.'})+
+    (we?fld('veillee_theme','Thème de la veillée (facultatif)',{dis,ph:'Ex : veillée contes, chants, jeu de nuit…'}):'');
+  if(k==='prog'){
+    const poSel=[['','—'],...POSTES.map(p=>[p.k,p.k])];
+    const rows=(key)=>(w[key]||[]).map((r,i)=>`<div class="rowh"><div class="fld"><input data-f="${key}.${i}.h" value="${esc(r.h)}" ${dis} placeholder="14h00" aria-label="Heure"></div><div class="fld"><input data-f="${key}.${i}.act" value="${esc(r.act)}" ${dis} placeholder="Activité" aria-label="Activité"></div>${dis?'<span></span>':`<button class="x" data-a="delrow" data-l="${key}" data-i="${i}" aria-label="Supprimer">✕</button>`}<div class="fld pa"><select data-f="${key}.${i}.pa" ${dis} aria-label="Responsable">${poSel.map(o=>`<option value="${esc(o[0])}" ${o[0]===(r.pa||'')?'selected':''}>${o[0]?'Resp. : '+esc(o[1]):'Responsable…'}</option>`).join('')}</select></div></div>`).join('');
+    let h=`<p class="small mute" style="margin:0">Programme type pré-rempli : modifie les horaires et les activités.</p><div class="subh">${we?'Samedi':'Déroulé de la journée'}</div><div>${rows('horaire_j1')}</div>${dis?'':`<button class="btn s" data-a="addrow" data-l="horaire_j1">+ Ajouter une ligne</button>`}`;
+    if(we) h+=`<div class="subh" style="margin-top:6px">Dimanche</div><div>${rows('horaire_j2')}</div>${dis?'':`<button class="btn s" data-a="addrow" data-l="horaire_j2">+ Ajouter une ligne</button>`}`;
+    if(!dis) h+=`<button class="btn g s" data-a="resetprog" style="justify-self:start">↺ Remettre le programme type</button>`;
+    return h;
+  }
+  if(k==='postes'){
+    const names=scouts().map(s=>s.prenom);
+    return `<p class="small mute" style="margin:0">Un gars par poste (pré-rempli d’après l’onglet Patrouille). Un même gars peut cumuler deux postes.</p>`+POSTES.map(p=>{
+      const po=w.postes[p.k]||{}, det=S.pdet.all||po.mission||po.materiel;
+      return `<div class="prow"><div class="pnm"><b>${esc(p.k)}</b><span>${esc(p.d)}</span></div><div class="fld"><select data-f="postes.${p.k}.scout" ${dis} aria-label="${esc(p.k)}"><option value="">— Choisir —</option>${names.map(n=>`<option ${n===po.scout?'selected':''}>${esc(n)}</option>`).join('')}</select></div></div>`+
+        (det?`<div class="pdet"><div class="fld"><input data-f="postes.${p.k}.mission" value="${esc(po.mission||'')}" ${dis} placeholder="Mission pour cette sortie"></div><div class="fld"><input data-f="postes.${p.k}.materiel" value="${esc(po.materiel||'')}" ${dis} placeholder="Matériel à prévoir"></div></div>`:'');
+    }).join('')+(S.pdet.all||dis?'':`<button class="btn g s" data-a="pdet" style="justify-self:start">+ Ajouter missions et matériel</button>`);
+  }
+  return '';
+}
+function tabPrep(a,dis){
+  const w=S.work, c=completeness(w), defs=secDefs(a,w);
+  let h=`<div class="card" id="pbox">${progBox(c,defs)}</div>`;
+  defs.forEach(d=>{const open=!!S.open[d.k];h+=`<div class="card asec ${open?'open':''}" data-sec="${d.k}">${secHead(d,open)}${open?`<div class="ab">${secBody(d.k,a,dis)}</div>`:''}</div>`});
   return h;
 }
-function tabPostes(a,dis){
-  const names=scouts().map(s=>s.prenom);
-  return `<p class="small mute">Un poste par gars. Un même gars peut en cumuler plusieurs si la patrouille est petite.</p>`+POSTES.map(p=>`<div class="pcard"><div class="t"><b>${esc(p.k)}</b></div><div class="d">${esc(p.d)}</div>
-    <div class="fld"><select data-f="postes.${p.k}.scout" ${dis}><option value="">— Choisir —</option>${names.map(n=>`<option ${n===(S.work.postes[p.k]||{}).scout?'selected':''}>${esc(n)}</option>`).join('')}</select></div>
-    <div class="fld"><input data-f="postes.${p.k}.mission" value="${esc((S.work.postes[p.k]||{}).mission||'')}" ${dis} placeholder="Mission précise pour cette sortie"></div>
-    <div class="fld"><input data-f="postes.${p.k}.materiel" value="${esc((S.work.postes[p.k]||{}).materiel||'')}" ${dis} placeholder="Matériel à prévoir"></div></div>`).join('');
+function refreshStatus(){
+  const a=curAct(); if(!a||S.view!=='sortie'||S.tab==='debrief'||!$('#pbox')) return;
+  const w=S.work, c=completeness(w), defs=secDefs(a,w);
+  $('#pbox').innerHTML=progBox(c,defs);
+  defs.forEach(d=>{const h=$('[data-sec="'+d.k+'"] .ah'); if(h) h.outerHTML=secHead(d,!!S.open[d.k])});
+}
+function autoOpen(a){S.open={};S.pdet={};const d=secDefs(a,S.work).find(x=>!x.ok&&!x.opt);if(d)S.open[d.k]=true}
+function viewSortie(a){
+  const w=S.work, s=stage(a), cm=w.validation&&w.validation.commentaires, dis=ficheEditable(a)?'':'disabled';
+  let h=`<div class="card" style="padding:16px 16px 14px">${stepper(s)}</div><div style="height:12px"></div>`;
+  if(s.i===0&&stOf(a)==='À corriger'&&cm) h+=`<div class="banner bad">${ico.alert}<div><b>À corriger avant renvoi</b><p>${esc(cm)}</p></div></div><div style="height:12px"></div>`;
+  if(s.i===1) h+=`<div class="banner info">${ico.lock}<div><b>Envoyée au chef</b><p>La fiche est verrouillée pendant la relecture. Tu seras prévenu ici dès qu’elle est validée ou à corriger.</p></div></div><div style="height:12px"></div>`;
+  if(s.i>=2&&s.i<=4&&S.tab!=='debrief') h+=`<div class="banner ok">${ico.check}<div><b>Fiche validée par le chef</b>${cm?`<p>${esc(cm)}</p>`:''}${w.validation&&w.validation.consignes_securite?`<p style="margin-top:6px">🛟 ${esc(w.validation.consignes_securite)}</p>`:''}</div></div><div style="height:12px"></div>`;
+  const deb=S.tab==='debrief';
+  h+=`<div class="seg"><button data-a="tab" data-v="fiche" class="${deb?'':'on'}">📝 Préparer</button><button data-a="tab" data-v="debrief" class="${deb?'on':''}">${debriefEditable(a)?'📋':'🔒'} Débrief</button></div>`;
+  return h+(deb?tabDebrief(a):tabPrep(a,dis));
 }
 function tabDebrief(a){
   if(!debriefEditable(a)){
-    return `<div class="empty"><div class="em">🔒</div><b>Le débrief s’ouvre après la validation</b><p class="small">Quand le chef aura validé ta fiche, tu pourras faire le bilan de la sortie ici, à chaud.</p></div>`;
+    return `<div class="card empty"><div class="em">🔒</div><b>Le débrief s’ouvre après la validation</b><p class="small">Quand le chef aura validé ta fiche, tu pourras faire le bilan de la sortie ici, à chaud.</p></div>`;
   }
   const d=S.work.debrief, names=scouts().map(s=>s.prenom), abs=(d.absents||'').split(',').map(x=>x.trim()).filter(Boolean);
-  let h=`<div class="h3">Bilan de la sortie</div>`;
-  h+=`<div class="fld"><label>Ambiance générale</label><div>${[1,2,3,4,5].map(n=>`<button type="button" class="star ${n<=(d.ambiance||0)?'on':''}" data-a="star" data-n="${n}" aria-label="${n} sur 5">★</button>`).join('')}</div></div>`;
-  h+=`<div class="fld"><label>Absents</label><div class="chips">${names.map(n=>`<button type="button" class="tg ${abs.includes(n)?'on':''}" data-a="absent" data-n="${esc(n)}">${esc(n)}</button>`).join('')}</div><div class="hint">Touche les prénoms des absents, puis précise le motif si besoin.</div></div>`;
-  h+=fld('debrief.absents_motif','Motif des absences',{ph:'Facultatif'});
-  h+=fld('debrief.service_rendu','Service rendu au propriétaire',{ph:'Ex : bois rentré et rangé'});
-  h+=fld('debrief.messe_deroulement','Déroulement de la messe',{ph:'Ex : très bien passé'});
-  h+=fld('debrief.objectifs_atteints','Les objectifs ont-ils été atteints ?',{t:'area',ph:'Techniques travaillées, jeu, veillée…'});
-  h+=fld('debrief.progression_scouts','Progression des gars',{t:'area',ph:'Ex : Leonardo prêt pour son raid, Clément a bien tenu son poste…'});
-  h+=`<div class="fld"><label>Badges ou étapes à envisager</label>${(d.badges_envisages||[]).map((b,i)=>`<div class="rowh" style="grid-template-columns:130px 1fr 38px"><div class="fld"><select data-f="debrief.badges_envisages.${i}.scout">${['',...names].map(n=>`<option ${n===b.scout?'selected':''} value="${esc(n)}">${n?esc(n):'Qui ?'}</option>`).join('')}</select></div><div class="fld"><input data-f="debrief.badges_envisages.${i}.badge" value="${esc(b.badge||'')}" placeholder="Badge / étape"></div><button class="x" data-a="delbadge" data-i="${i}" aria-label="Supprimer">✕</button></div>`).join('')}<button class="btn s" data-a="addbadge" style="margin-top:8px">+ Proposer un badge</button></div>`;
-  h+=fld('debrief.ameliorations','Ce qu’on améliore la prochaine fois',{t:'area',ph:'Ponctualité, veillée trop courte…'});
-  h+=fld('debrief.bilan_cdp','Bilan du Conseil de Patrouille',{t:'area',ph:'Ambiance, décisions prises par les gars…'});
+  const card=(ic,t,body)=>`<div class="card form"><div class="subh">${ic} ${t}</div>${body}</div>`;
+  let h=card('⭐','Ambiance et présence',
+    `<div class="fld"><label>Ambiance générale</label><div>${[1,2,3,4,5].map(n=>`<button type="button" class="star ${n<=(d.ambiance||0)?'on':''}" data-a="star" data-n="${n}" aria-label="${n} sur 5">★</button>`).join('')}</div></div>
+     <div class="fld"><label>Qui était absent ?</label><div class="chips">${names.map(n=>`<button type="button" class="tg ${abs.includes(n)?'on':''}" data-a="absent" data-n="${esc(n)}">${esc(n)}</button>`).join('')}</div><div class="hint">Touche les prénoms des absents.</div></div>`+
+    (abs.length?fld('debrief.absents_motif','Motif des absences',{ph:'Facultatif'}):''));
+  h+=card('🏕️','Déroulé',
+    fld('debrief.objectifs_atteints','Les objectifs ont-ils été atteints ?',{t:'area',ph:'Techniques travaillées, jeu, veillée…'})+
+    `<div class="two">${fld('debrief.service_rendu','Service rendu',{ph:'Ex : bois rentré'})}${fld('debrief.messe_deroulement','Messe',{ph:'Ex : très bien passée'})}</div>`);
+  h+=card('🌱','Progression des gars',
+    fld('debrief.progression_scouts','Qui a progressé, sur quoi ?',{t:'area',ph:'Ex : Leonardo prêt pour son raid, Clément a bien tenu son poste…'})+
+    `<div class="fld"><label>Badges ou étapes à envisager</label>${(d.badges_envisages||[]).map((b,i)=>`<div class="rowh" style="grid-template-columns:130px 1fr 38px"><div class="fld"><select data-f="debrief.badges_envisages.${i}.scout">${['',...names].map(n=>`<option ${n===b.scout?'selected':''} value="${esc(n)}">${n?esc(n):'Qui ?'}</option>`).join('')}</select></div><div class="fld"><input data-f="debrief.badges_envisages.${i}.badge" value="${esc(b.badge||'')}" placeholder="Badge / étape"></div><button class="x" data-a="delbadge" data-i="${i}" aria-label="Supprimer">✕</button></div>`).join('')}<button class="btn s" data-a="addbadge" style="margin-top:8px">+ Proposer un badge</button></div>`);
+  h+=card('🔁','Pour la prochaine fois',
+    fld('debrief.ameliorations','Ce qu’on améliore',{t:'area',ph:'Ponctualité, veillée trop courte…'})+
+    fld('debrief.bilan_cdp','Bilan du Conseil de Patrouille',{t:'area',ph:'Ambiance, décisions prises par les gars…'}));
   return h;
 }
 function actionBar(a){
@@ -692,7 +836,7 @@ async function doSave(kind,submit){
       if(kind==='submit'){toast('Fiche envoyée au chef ✓');S.work.statut=res.statut}
       else if(kind==='debrief_submit') toast('Débrief envoyé ✓');
       else toast('Enregistré ✓');
-      LS.set('cache',{res:{pat:S.pat,snapshot:S.snap,fiches:Object.values(S.fiches)},at:Date.now()});
+      cacheNow();
     } else if(res.error==='conflict'){
       S.fiches[a.id]={act_id:a.id,fiche:res.current.fiche,statut:res.current.statut,rev:res.current.rev};
       LS.del(dkey(a.id)); openWork(a); toast('Le chef a modifié la fiche : version à jour rechargée');
@@ -707,9 +851,9 @@ function confirmSend(kind){
   const a=curAct(), w=S.work;
   let h;
   if(kind==='submit'){
-    const c=completeness(w), miss=c.items.filter(i=>!i[1]);
+    const c=completeness(w), miss=c.items.filter(i=>!i.ok);
     if(!(w.lieu||'').trim()){toast('Indique au moins le lieu avant d’envoyer');S.tab='fiche';render();return}
-    h=`<h3>Envoyer la fiche au chef ?</h3><p class="mute">Elle sera verrouillée pendant la relecture.</p>${miss.length?`<div class="banner warn">${ico.alert}<div><b>Encore à compléter</b><ul>${miss.map(m=>`<li>${esc(m[0])}</li>`).join('')}</ul></div></div>`:`<div class="banner ok">${ico.check}<div><b>Fiche complète</b></div></div>`}`;
+    h=`<h3>Envoyer la fiche au chef ?</h3><p class="mute">Elle sera verrouillée pendant la relecture.</p>${miss.length?`<div class="banner warn">${ico.alert}<div><b>Encore à compléter</b><ul>${miss.map(m=>`<li>${esc(m.l)}</li>`).join('')}</ul></div></div>`:`<div class="banner ok">${ico.check}<div><b>Fiche complète</b></div></div>`}`;
   } else h=`<h3>Envoyer le débrief ?</h3><p class="mute">Le chef recevra ton bilan. Tu pourras encore le mettre à jour ensuite.</p>`;
   const m=document.createElement('div'); m.className='modal'; m.innerHTML=`<div class="sheet">${h}<div style="display:grid;gap:10px"><button class="btn ${kind==='submit'?'p':'ok'} full" data-a="confirm-yes">${miss(kind)?'Envoyer quand même':'Envoyer'}</button><button class="btn full" data-a="confirm-no">Continuer à modifier</button></div></div>`;
   function miss(k){return k==='submit'&&completeness(w).pct<100}
@@ -720,7 +864,7 @@ document.addEventListener('click',e=>{
   const el=e.target.closest('[data-a]'); if(!el) return;
   const a=el.dataset.a;
   if(a==='nav'){S.view=el.dataset.v;S.actId=null;history.pushState({v:S.view},'');render();window.scrollTo(0,0)}
-  else if(a==='open'){S.actId=el.dataset.id;S.tab=el.dataset.tab||'fiche';S.view='sortie';openWork(curAct());history.pushState({v:'sortie'},'');render();window.scrollTo(0,0)}
+  else if(a==='open'){S.actId=el.dataset.id;S.tab=el.dataset.tab||'fiche';S.view='sortie';openWork(curAct());autoOpen(curAct());history.pushState({v:'sortie'},'');render();window.scrollTo(0,0)}
   else if(a==='back'){history.back()}
   else if(a==='refresh'){load(true)}
   else if(a==='filter'){S.filter=el.dataset.v;render()}
@@ -732,16 +876,42 @@ document.addEventListener('click',e=>{
   else if(a==='delbadge'){S.work.debrief.badges_envisages.splice(+el.dataset.i,1);markDirty();render()}
   else if(a==='star'){S.work.debrief.ambiance=+el.dataset.n;markDirty();render()}
   else if(a==='absent'){const d=S.work.debrief;const l=(d.absents||'').split(',').map(x=>x.trim()).filter(Boolean);const n=el.dataset.n;const i=l.indexOf(n);if(i>=0)l.splice(i,1);else l.push(n);d.absents=l.join(', ');markDirty();render()}
+  else if(a==='sec'){const k=el.dataset.k;S.open[k]=el.dataset.force?true:!S.open[k];render();if(el.dataset.force)setTimeout(()=>{const e=$('[data-sec="'+k+'"]');if(e)e.scrollIntoView({block:'start',behavior:'smooth'})},30)}
+  else if(a==='pdet'){S.pdet.all=true;render()}
+  else if(a==='resetprog'){if(confirm('Remettre le programme type ? Tes lignes actuelles seront remplacées.')){const d=defaultFiche(curAct());S.work.horaire_j1=d.horaire_j1;S.work.horaire_j2=d.horaire_j2;markDirty();render()}}
+  else if(a==='color'){saveProfile(el.dataset.c,(S.profile||{}).devise||'')}
+  else if(a==='devise'){saveProfile((S.profile||{}).color||'',(($('#devise')||{}).value||'').trim())}
+  else if(a==='scoutsave'){scoutSave(el.dataset.id)}
+  else if(a==='photo'){showPhoto(el.dataset.id)}
   else if(a==='save'){doSave(el.dataset.k)}
   else if(a==='submit-fiche'){confirmSend('submit')}
   else if(a==='submit-debrief'){confirmSend('debrief')}
   else if(a==='paste'){const v=($('#paste')||{}).value||'';const m=v.match(/t=([A-Za-z0-9_-]{20,})/)||v.trim().match(/^([A-Za-z0-9_-]{20,})$/);if(m){S.token=m[1];LS.set('tk',S.token);S.err='';load()}else toast('Lien non reconnu')}
   else if(a==='paste-reset'){S.token=null;S.err='';render()}
 });
+function showPhoto(id){
+  const m=document.createElement('div'); m.className='modal';
+  m.innerHTML=`<div class="sheet lb"><img src="${S.photos[id]||''}" alt="Photo de la patrouille"><div style="display:grid;gap:10px;width:100%"><button class="btn full" data-a="x-close">Fermer</button><button class="btn full" style="color:var(--bad)" data-a="x-del">Supprimer cette photo</button></div></div>`;
+  m.addEventListener('click',async e=>{const b=e.target.closest('[data-a]');
+    if(e.target===m||(b&&b.dataset.a==='x-close')){m.remove();return}
+    if(b&&b.dataset.a==='x-del'&&confirm('Supprimer cette photo de l’album ?')){m.remove();try{const r=await rpc('troupe_cp_photo_del',{p_token:S.token,p_id:id});if(r.ok){S.profile=r.profile;delete S.photos[id];S.photosRev=r.profile.rev;toast('Photo supprimée');render()}}catch(err){toast('Pas de connexion')}}});
+  document.body.appendChild(m);
+}
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.id==='photoIn') addPhotos(t.files,'gallery');
+  else if(t.id==='coverIn') addPhotos(t.files,'cover');
+  else if(t.id==='colorpick') saveProfile(t.value,(S.profile||{}).devise||'');
+});
+document.addEventListener('toggle',e=>{const d=e.target;if(d&&d.dataset&&d.dataset.sid)S.openScouts[d.dataset.sid]=d.open},true);
+const rs={t:null};
 document.addEventListener('input',e=>{
+  const sf=e.target.dataset&&e.target.dataset.sf;
+  if(sf){const [id,f]=sf.split(':');(S.sedit[id]=S.sedit[id]||{})[f]=e.target.value;const b=$('#sv-'+id);if(b)b.disabled=false;return}
   const p=e.target.dataset&&e.target.dataset.f; if(!p||!S.work) return;
   const v=e.target.type==='checkbox'?e.target.checked:e.target.value;
   setP(S.work,p,v); markDirty();
+  clearTimeout(rs.t); rs.t=setTimeout(refreshStatus,250);
 });
 window.addEventListener('popstate',()=>{ if(S.view==='sortie'){ if(S.dirty){const a=curAct();if(a)LS.set(dkey(a.id),{fiche:S.work,base_rev:S.baseRev,at:Date.now()})} S.view='sorties';S.actId=null;render();window.scrollTo(0,0)} else if(S.view!=='home'){S.view='home';render()} });
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&S.token&&!S.dirty&&!S.busy&&(!S.sync||Date.now()-S.sync>20000))load(true)});
