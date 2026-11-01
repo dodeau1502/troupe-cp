@@ -207,6 +207,18 @@ body.has-bar{padding-bottom:calc(var(--tab-h) + env(safe-area-inset-bottom) + 12
 .sw{display:flex;flex-wrap:wrap;gap:10px}
 .sw button{width:38px;height:38px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 1.5px var(--line);cursor:pointer;padding:0}
 .sw button.on{box-shadow:0 0 0 3px var(--ink)}
+.opts{display:flex;gap:8px;flex-wrap:wrap}
+.opt{border:1.5px solid var(--line);background:var(--card);border-radius:99px;min-height:42px;padding:0 18px;font-weight:650;cursor:pointer;color:var(--ink2)}
+.opt.on{background:var(--acc2);border-color:var(--acc);color:var(--acc)}
+.opt.on.non[data-k=objectif_atteint],.opt.on.oui[data-k=incident]{background:var(--bad2);border-color:var(--bad);color:var(--bad)}
+.smileys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.sm{border:1.5px solid var(--line);background:var(--card);border-radius:14px;padding:8px 2px;cursor:pointer;display:grid;gap:2px;justify-items:center;color:var(--ink2)}
+.sm span{font-size:28px;line-height:1;filter:grayscale(1);opacity:.55}
+.sm em{font-style:normal;font-size:11.5px;font-weight:650}
+.sm.on{border-color:var(--acc);background:var(--acc2);color:var(--acc)}
+.sm.on span{filter:none;opacity:1}
+.urgfld textarea{border-color:var(--bad)}
+.card.urg{border-color:var(--bad)}
 .album{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .album .ph{aspect-ratio:1;border-radius:14px;background-color:var(--line2);background-size:cover;background-position:center;border:0;cursor:pointer;padding:0}
 .album .add{display:grid;place-items:center;align-content:center;gap:2px;border:2px dashed var(--line);color:var(--ink2);font-size:12.5px;font-weight:650;text-align:center;cursor:pointer;aspect-ratio:1;border-radius:14px;background:var(--card)}
@@ -483,7 +495,7 @@ function defaultFiche(a){
     horaire_j1:H1.map(r=>({h:r[0],act:r[1],pa:r[2]})), horaire_j2:H2.map(r=>({h:r[0],act:r[1],pa:r[2]})),
     statut:'En préparation',
     validation:{valide:false,date:'',ct_nom:'',commentaires:'',consignes_securite:''},
-    debrief:{fait:false,date:'',ambiance:0,service_rendu:'',absents:'',messe_deroulement:'',objectifs_atteints:'',progression_scouts:'',badges_envisages:[],ameliorations:'',bilan_cdp:''}
+    debrief:{fait:false,date:'',ambiance:0,ambiance_max:4,service_rendu:'',absents:'',messe_deroulement:'',objectifs_atteints:'',progression_scouts:'',badges_envisages:[],ameliorations:'',bilan_cdp:'',prevu_fait:'',objectif_atteint:'',materiel_types:'',materiel_detail:'',roles_bilan:'',scout_valorise:'',scout_valorise_pourquoi:'',difficulte_patrouille:'',appris_reussi:'',difficile_rate:'',cp_bien:'',cp_autrement:'',cp_aide:'',incident:'',incident_desc:'',urgent:'',suite_refaire:'',suite_changer:'',suite_demande:''}
   };
 }
 const isWE=a=>!!(a.weekend||(a.fin&&a.fin!==a.debut)||/week-?end/i.test(a.titre||''));
@@ -503,6 +515,7 @@ function openWork(a){
     else if(debriefEditable(a)&&dk.fiche.debrief) w.debrief=merge(w.debrief,dk.fiche.debrief);
     S.dirty=true;
   } else { if(dk) LS.del(dkey(a.id)); S.dirty=false; }
+  { const d=w.debrief; if(d.ambiance_max!==4){ d.ambiance=d.ambiance?Math.max(1,Math.round(d.ambiance*4/5)):0; d.ambiance_max=4 } }
   S.work=w; S.baseRev=f?f.rev:null;
 }
 function markDirty(){
@@ -532,7 +545,7 @@ function ringSvg(pct,size,stroke,col){const r=(size-stroke)/2,c=2*Math.PI*r;retu
 function chip(t,tone){return `<span class="chip ${tone||''}">${esc(t)}</span>`}
 function header(title,sub,back){
   const nm=patNom(), pr=S.profile||{};
-  const cv=!back&&pr.cover&&S.photos[pr.cover], dv=!back&&pr.devise;
+  const cv=pr.cover&&S.photos[pr.cover], dv=!back&&pr.devise;
   const isPat=!back&&S.view==='pat';
   return `<header class="top"><div class="wrap">
     ${back?`<button class="back" data-a="back">${ico.back}Retour</button>`:''}
@@ -789,20 +802,43 @@ function tabDebrief(a){
     return `<div class="card empty"><div class="em">🔒</div><b>Le débrief s’ouvre après la validation</b><p class="small">Quand le chef aura validé ta fiche, tu pourras faire le bilan de la sortie ici, à chaud.</p></div>`;
   }
   const d=S.work.debrief, names=scouts().map(s=>s.prenom), abs=(d.absents||'').split(',').map(x=>x.trim()).filter(Boolean);
-  const card=(ic,t,body)=>`<div class="card form"><div class="subh">${ic} ${t}</div>${body}</div>`;
-  let h=card('⭐','Ambiance et présence',
-    `<div class="fld"><label>Ambiance générale</label><div>${[1,2,3,4,5].map(n=>`<button type="button" class="star ${n<=(d.ambiance||0)?'on':''}" data-a="star" data-n="${n}" aria-label="${n} sur 5">★</button>`).join('')}</div></div>
-     <div class="fld"><label>Qui était absent ?</label><div class="chips">${names.map(n=>`<button type="button" class="tg ${abs.includes(n)?'on':''}" data-a="absent" data-n="${esc(n)}">${esc(n)}</button>`).join('')}</div><div class="hint">Touche les prénoms des absents.</div></div>`+
-    (abs.length?fld('debrief.absents_motif','Motif des absences',{ph:'Facultatif'}):''));
-  h+=card('🏕️','Déroulé',
-    fld('debrief.objectifs_atteints','Les objectifs ont-ils été atteints ?',{t:'area',ph:'Techniques travaillées, jeu, veillée…'})+
+  const mat=(d.materiel_types||'').split(',').map(x=>x.trim()).filter(Boolean);
+  const card=(ic,t,body,cls)=>`<div class="card form ${cls||''}"><div class="subh">${ic} ${t}</div>${body}</div>`;
+  const opts=(k,label,list,hint)=>`<div class="fld"><label>${label}</label><div class="opts">${list.map(([v,l])=>`<button type="button" class="opt ${d[k]===v?'on '+v:''}" data-a="dopt" data-k="${k}" data-v="${v}">${l}</button>`).join('')}</div>${hint?`<div class="hint">${hint}</div>`:''}</div>`;
+  const SM=[['😞','Difficile'],['😐','Moyenne'],['🙂','Bonne'],['😄','Excellente']];
+  let h=card('1️⃣','Les faits',
+    `<div class="hint" style="margin:-4px 0 12px">Objectif et sans jugement : ce qui s’est passé.</div>`+
+    fld('debrief.prevu_fait','Prévu vs réalisé',{t:'area',rows:2,ph:'Ex : prévu veillée + jeu de piste, fait : jeu de piste seulement (pluie)'})+
+    opts('objectif_atteint','Objectif atteint ?',[['oui','Oui'],['partie','En partie'],['non','Non']])+
+    `<div class="fld"><label>Matériel</label><div class="chips">${[['manquant','Manquant'],['casse','Cassé'],['racheter','À racheter'],['reparer','À réparer']].map(([v,l])=>`<button type="button" class="opt ${mat.includes(v)?'on':''}" data-a="dmulti" data-k="materiel_types" data-v="${v}">${l}</button>`).join('')}</div></div>`+
+    (mat.length?fld('debrief.materiel_detail','Quel matériel ?',{t:'area',rows:2,ph:'Ex : 1 piquet de tente cassé, ficelle à racheter'}):'')+
     `<div class="two">${fld('debrief.service_rendu','Service rendu',{ph:'Ex : bois rentré'})}${fld('debrief.messe_deroulement','Messe',{ph:'Ex : très bien passée'})}</div>`);
-  h+=card('🌱','Progression des gars',
-    fld('debrief.progression_scouts','Qui a progressé, sur quoi ?',{t:'area',ph:'Ex : Leonardo prêt pour son raid, Clément a bien tenu son poste…'})+
-    `<div class="fld"><label>Badges ou étapes à envisager</label>${(d.badges_envisages||[]).map((b,i)=>`<div class="rowh" style="grid-template-columns:130px 1fr 38px"><div class="fld"><select data-f="debrief.badges_envisages.${i}.scout">${['',...names].map(n=>`<option ${n===b.scout?'selected':''} value="${esc(n)}">${n?esc(n):'Qui ?'}</option>`).join('')}</select></div><div class="fld"><input data-f="debrief.badges_envisages.${i}.badge" value="${esc(b.badge||'')}" placeholder="Badge / étape"></div><button class="x" data-a="delbadge" data-i="${i}" aria-label="Supprimer">✕</button></div>`).join('')}<button class="btn s" data-a="addbadge" style="margin-top:8px">+ Proposer un badge</button></div>`);
-  h+=card('🔁','Pour la prochaine fois',
-    fld('debrief.ameliorations','Ce qu’on améliore',{t:'area',ph:'Ponctualité, veillée trop courte…'})+
-    fld('debrief.bilan_cdp','Bilan du Conseil de Patrouille',{t:'area',ph:'Ambiance, décisions prises par les gars…'}));
+  h+=card('2️⃣','Vie de patrouille',
+    `<div class="fld"><label>Ambiance générale</label><div class="smileys">${SM.map(([e,l],i)=>`<button type="button" class="sm ${(d.ambiance||0)===i+1?'on':''}" data-a="star" data-n="${i+1}" aria-label="${l}"><span>${e}</span><em>${l}</em></button>`).join('')}</div></div>
+     <div class="fld"><label>Qui était absent ?</label><div class="chips">${names.map(n=>`<button type="button" class="tg ${abs.includes(n)?'on':''}" data-a="absent" data-n="${esc(n)}">${esc(n)}</button>`).join('')}</div><div class="hint">Touche les prénoms des absents.</div></div>`+
+    (abs.length?fld('debrief.absents_motif','Motif des absences',{ph:'Facultatif'}):'')+
+    fld('debrief.roles_bilan','Rôles tenus : qui a fait quoi, et ça a bien fonctionné ?',{t:'area',ph:'Ex : Clément cuisinier : bien. Gaspard intendant : a oublié le gaz.',hint:'PA et responsabilités du jour.'})+
+    `<div class="two">${fld('debrief.scout_valorise','Un éclaireur à valoriser',{t:'sel',o:[['','— Choisir —'],...names.map(n=>[n,n])]})}${fld('debrief.scout_valorise_pourquoi','Pourquoi ?',{ph:'Ex : a pris les devants'})}</div>
+     <div class="hint" style="margin:-6px 0 12px;font-size:12.5px;color:var(--ink3)">Prénom seulement, sans données personnelles.</div>`+
+    fld('debrief.difficulte_patrouille','Une difficulté rencontrée dans la patrouille',{t:'area',rows:2,ph:'Ex : tensions au moment du repas'}));
+  const bl=(d.badges_envisages||[]);
+  h+=card('3️⃣','Apprentissage et progression',
+    fld('debrief.appris_reussi','Ce que la patrouille a appris ou réussi',{t:'area',rows:2,ph:'Technique, savoir-faire : ex. montage de tente en 10 min'})+
+    fld('debrief.difficile_rate','Ce qui a été difficile ou raté',{t:'area',rows:2,ph:'Ex : feu long à démarrer'})+
+    `<div class="fld"><label>Points de PA ou épreuves atteints ?</label><div class="hint" style="margin:0 0 8px">Tu proposes, c’est le chef qui confirme.</div>${bl.map((b,i)=>`<div class="rowh" style="grid-template-columns:130px 1fr 38px"><div class="fld"><select data-f="debrief.badges_envisages.${i}.scout">${['',...names].map(n=>`<option ${n===b.scout?'selected':''} value="${esc(n)}">${n?esc(n):'Qui ?'}</option>`).join('')}</select></div><div class="fld"><input data-f="debrief.badges_envisages.${i}.badge" value="${esc(b.badge||'')}" placeholder="Point de PA / épreuve"></div><button class="x" data-a="delbadge" data-i="${i}" aria-label="Supprimer">✕</button></div>`).join('')}<button class="btn s" data-a="addbadge" style="margin-top:8px">+ Proposer</button></div>`);
+  h+=card('4️⃣','Mon regard de CP',
+    fld('debrief.cp_bien','Ce que j’ai bien fait',{t:'area',rows:2})+
+    fld('debrief.cp_autrement','Ce que je ferais autrement',{t:'area',rows:2})+
+    fld('debrief.cp_aide','Où j’ai eu besoin d’aide',{t:'area',rows:2}));
+  h+=card('5️⃣','Sécurité',
+    opts('incident','Incident, blessure ou situation à risque ?',[['non','Non'],['oui','Oui']])+
+    (d.incident==='oui'?fld('debrief.incident_desc','Description factuelle courte',{t:'area',rows:2,ph:'Quoi, quand, qui, ce qui a été fait'}):'')+
+    `<div class="fld urgfld"><label>🚨 Urgent, à te dire directement</label><textarea data-f="debrief.urgent" rows="2" placeholder="Laisse vide s’il n’y a rien d’urgent">${esc(d.urgent||'')}</textarea><div class="hint">Si tu écris ici, ton chef le voit en rouge dès l’envoi. Appelle-le aussi.</div></div>`,
+    d.urgent&&d.urgent.trim()?'urg':'');
+  h+=card('6️⃣','Suite',
+    fld('debrief.suite_refaire','Une chose à refaire',{t:'area',rows:2})+
+    fld('debrief.suite_changer','Une chose à changer',{t:'area',rows:2})+
+    fld('debrief.suite_demande','Demande pour la prochaine réunion',{t:'area',rows:2,ph:'Matériel, formation, idée…'}));
   return h;
 }
 function actionBar(a){
@@ -879,7 +915,9 @@ document.addEventListener('click',e=>{
   else if(a==='delrow'){S.work[el.dataset.l].splice(+el.dataset.i,1);markDirty();render()}
   else if(a==='addbadge'){S.work.debrief.badges_envisages.push({scout:'',badge:''});markDirty();render()}
   else if(a==='delbadge'){S.work.debrief.badges_envisages.splice(+el.dataset.i,1);markDirty();render()}
-  else if(a==='star'){S.work.debrief.ambiance=+el.dataset.n;markDirty();render()}
+  else if(a==='star'){const d=S.work.debrief,n=+el.dataset.n;d.ambiance=d.ambiance===n?0:n;d.ambiance_max=4;markDirty();render()}
+  else if(a==='dopt'){const d=S.work.debrief,k=el.dataset.k,v=el.dataset.v;d[k]=d[k]===v?'':v;markDirty();render()}
+  else if(a==='dmulti'){const d=S.work.debrief,k=el.dataset.k,l=(d[k]||'').split(',').map(x=>x.trim()).filter(Boolean),v=el.dataset.v,i=l.indexOf(v);if(i>=0)l.splice(i,1);else l.push(v);d[k]=l.join(', ');markDirty();render()}
   else if(a==='absent'){const d=S.work.debrief;const l=(d.absents||'').split(',').map(x=>x.trim()).filter(Boolean);const n=el.dataset.n;const i=l.indexOf(n);if(i>=0)l.splice(i,1);else l.push(n);d.absents=l.join(', ');markDirty();render()}
   else if(a==='sec'){const k=el.dataset.k;S.open[k]=el.dataset.force?true:!S.open[k];render();if(el.dataset.force)setTimeout(()=>{const e=$('[data-sec="'+k+'"]');if(e)e.scrollIntoView({block:'start',behavior:'smooth'})},30)}
   else if(a==='pdet'){S.pdet.all=true;render()}
